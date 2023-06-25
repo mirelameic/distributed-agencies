@@ -1,18 +1,30 @@
-## Getting Started
+# Distributed Agencys
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+    Projeto da disciplina de Sistemas Distribuidos (EACH-USP)
+Sistema de informações sobre Agências e Agentes (parts) usando Remote Method Invocation (RMI) e Java.
+A classe `Agency` possui um identificador único e um nome de máquina. Ela é responsável por registrar-se no serviço de registro, bem como registrar agentes associados a ela e migrar agentes para outras agências.
+A classe `Agent` também possui um identificador único. Ela registra-se no serviço de registro, indicando a agência à qual pertence, e pode ser migrada para outra agência.
 
-## Folder Structure
+## Estrutura
 
-The workspace contains two folders by default, where:
+- `src`: pasta com arquivos .java
+- `bin`: pasta com arquivos .class
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Classes
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Comandos do cliente
 
-## Dependency Management
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+
+#
+## Compilar
+- Dentro da pasta `distributed-agencys`, execute o comando:
+  ~~~ 
+  $ javac -d bin src/*.java
+  ~~~
+## Executar
+- Dentro da pasta `distributed-agencys`, execute os seguintes comandos:
+  ~~~ 
+  $ cd bin; rmiregistry
+  ~~~
