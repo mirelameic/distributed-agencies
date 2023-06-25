@@ -1,9 +1,14 @@
 import java.util.Scanner;
 
 public class UserInterface {
-    private static Scanner scanner;
+    private static final Scanner scanner;
 
-    public UserInterface() {
+    private UserInterface() {
+        // O construtor privado impede a instanciação da classe
+        throw new AssertionError();
+    }
+
+    static {
         scanner = new Scanner(System.in);
     }
 

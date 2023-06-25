@@ -16,28 +16,27 @@ public class Client {
             return;
         }
 
-        UserInterface userInterface = new UserInterface();
 
-        userInterface.displayMessage("Enter the Agency ID:");
-        String agencyId = userInterface.getUserCommand();
+        UserInterface.displayMessage("Enter the Agency ID:");
+        String agencyId = UserInterface.getUserCommand();
 
-        userInterface.displayMessage("Enter the Machine Name:");
-        String machineName = userInterface.getUserCommand();
+        UserInterface.displayMessage("Enter the Machine Name:");
+        String machineName = UserInterface.getUserCommand();
 
         Agency agency = new Agency(agencyId, machineName, serviceRegistry);
         agency.register();
 
-        userInterface.printLine();
+        UserInterface.printLine();
 
-        userInterface.displayMessage("Enter the Agent ID:");
-        String agentId = userInterface.getUserCommand();
+        UserInterface.displayMessage("Enter the Agent ID:");
+        String agentId = UserInterface.getUserCommand();
 
         agency.registerAgent(agentId);
 
-        userInterface.printLine();
+        UserInterface.printLine();
 
-        userInterface.displayMessage("Enter the Destination Agency ID:");
-        String destinationAgencyId = userInterface.getUserCommand();
+        UserInterface.displayMessage("Enter the Destination Agency ID:");
+        String destinationAgencyId = UserInterface.getUserCommand();
 
         agency.migrateAgent(agentId, destinationAgencyId);
     }
