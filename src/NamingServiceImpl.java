@@ -5,11 +5,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiceRegistryImpl extends UnicastRemoteObject implements ServiceRegistry {
+public class NamingServiceImpl extends UnicastRemoteObject implements NamingService {
     private Map<String, String> agentRegistry;
     private Map<String, String> agencyRegistry;
 
-    public ServiceRegistryImpl() throws RemoteException {
+    public NamingServiceImpl() throws RemoteException {
         agentRegistry = new HashMap<>();
         agencyRegistry = new HashMap<>();
     }
@@ -50,13 +50,46 @@ public class ServiceRegistryImpl extends UnicastRemoteObject implements ServiceR
     }
 
     @Override
+    public void executeAgent(byte[] agentCode) throws RemoteException {
+        Thread agentThread = new Thread(() -> {
+            try {
+                // Carregando a classe do agente a partir do array de bytes
+                Class<?> agentClass = defineAgentClass(agentCode);
+
+                // Instanciando o agente
+                Agent agent = (Agent) agentClass.getDeclaredConstructor().newInstance();
+
+                // Executando o agente
+                agent.start();
+            } catch (Exception e) {
+                System.out.println("Failed to execute agent: " + e.getMessage());
+            }
+        });
+
+        agentThread.start();
+    }
+
+    public Class<?> defineAgentClass(byte[] agentCode) throws Exception {
+        // Criando um ClassLoader personalizado com a capacidade de definir uma classe a partir de um array de bytes
+        ClassLoader agentClassLoader = new ClassLoader() {
+            @Override
+            public Class<?> findClass(String name) throws ClassNotFoundException {
+                return defineClass(name, agentCode, 0, agentCode.length);
+            }
+        };
+
+        // Carregando e retornando a classe do agente
+        return agentClassLoader.loadClass("Agent");
+    }
+
+    @Override
     public void startAgent(String agentId) throws RemoteException {
         String agencyId = agentRegistry.get(agentId);
 
         if (agencyId != null) {
             try {
                 Registry registry = LocateRegistry.getRegistry();
-                AgentService agentService = new AgentServiceImpl(agentId, this);
+                Agent agentService = new AgentImpl(this);
                 registry.rebind(agentId, agentService);
                 System.out.println("Agent started: " + agentId);
             } catch (Exception e) {

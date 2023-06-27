@@ -1,12 +1,13 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.UUID;
 
-public class AgentServiceImpl extends UnicastRemoteObject implements AgentService {
+public class AgentImpl extends UnicastRemoteObject implements Agent {
     private String agentId;
-    private ServiceRegistry serviceRegistry;
+    private NamingService serviceRegistry;
 
-    public AgentServiceImpl(String agentId, ServiceRegistry serviceRegistry) throws RemoteException {
-        this.agentId = agentId;
+    public AgentImpl(NamingService serviceRegistry) throws RemoteException {
+        this.agentId = generateUniqueCode();
         this.serviceRegistry = serviceRegistry;
     }
 
@@ -15,5 +16,9 @@ public class AgentServiceImpl extends UnicastRemoteObject implements AgentServic
         System.out.println("Agent started: " + agentId);
         System.out.println("Listening for messages...");
         // Lógica para ouvir e processar mensagens aqui
+    }
+
+    private String generateUniqueCode(){
+        return UUID.randomUUID().toString();
     }
 }

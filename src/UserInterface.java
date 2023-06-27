@@ -4,7 +4,6 @@ public class UserInterface {
     private static final Scanner scanner;
 
     private UserInterface() {
-        // O construtor privado impede a instanciação da classe
         throw new AssertionError();
     }
 

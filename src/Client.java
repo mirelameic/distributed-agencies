@@ -1,43 +1,79 @@
-import java.rmi.RemoteException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class Client {
-    public static void main(String[] args) {
-        ServiceRegistry serviceRegistry;
+    private static Agency agency;
 
+    public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.createRegistry(1099);
-            serviceRegistry = new ServiceRegistryImpl();
-            registry.rebind("ServiceRegistry", serviceRegistry);
-            System.out.println("Service Registry started successfully!");
-        } catch (RemoteException e) {
-            System.out.println("Failed to start Service Registry: " + e.getMessage());
-            return;
+            listAllAgencys();
+            boolean running = true;
+
+            while (running) {
+                String command = UserInterface.getUserCommand();
+
+                // if (command.startsWith("bind ")) {
+                //     String newRepositoryName = command.substring(5);
+                //     bindRepository(newRepositoryName);
+                // } else if (command.equals("listp")) {
+                //     listParts();
+                // } else if (command.equals("lists")) {
+                //     listAllServers();
+                // } else if (command.startsWith("getp ")) {
+                //     String partCode = command.substring(5);
+                //     getPart(partCode);
+                // } else if (command.equals("showp")) {
+                //     showPart();
+                // } else if (command.equals("showsub")){
+                //     showSubParts();
+                // } else if (command.equals("clearlist")) {
+                //     clearSubPartsList();
+                // } else if (command.equals("addsubpart")) {
+                //     addSubPart();
+                // } else if (command.equals("addp")) {
+                //     addPart();
+                // }else if (command.equals("showinfo")){
+                //     showRepInfo();
+                // } else if (command.equals("quit")) {
+                //     UserInterface.displayMessage("Client terminated.");
+                //     System.exit(0);
+                // } else {
+                //     UserInterface.displayMessage("Invalid command.");
+                // }
+            }
+        } catch (Exception e) {
+            UserInterface.displayError("Client exception.", e);
         }
 
 
-        UserInterface.displayMessage("Enter the Agency ID:");
-        String agencyId = UserInterface.getUserCommand();
 
-        UserInterface.displayMessage("Enter the Machine Name:");
-        String machineName = UserInterface.getUserCommand();
 
-        Agency agency = new Agency(agencyId, machineName, serviceRegistry);
-        agency.register();
 
-        UserInterface.printLine();
+    //     try {
+    //         // Lendo o arquivo .class do agente como um array de bytes
+    //         byte[] agentCode = Files.readAllBytes(Path.of("bin/Agent.class"));
 
-        UserInterface.displayMessage("Enter the Agent ID:");
-        String agentId = UserInterface.getUserCommand();
+    //         // Fazendo a chamada à agência para executar o agente
+    //         // serviceRegistry.executeAgent(agentCode);
+    //     } catch (IOException e) {
+    //         System.out.println("Failed to read agent file: " + e.getMessage());
+    //         System.exit(1);
+    //     }
+    // }
 
-        agency.registerAgent(agentId);
 
-        UserInterface.printLine();
-
-        UserInterface.displayMessage("Enter the Destination Agency ID:");
-        String destinationAgencyId = UserInterface.getUserCommand();
-
-        agency.migrateAgent(agentId, destinationAgencyId);
     }
+
+    public static void listAllAgencys() throws Exception{
+        Registry registry = LocateRegistry.getRegistry();
+        String[] registryList = registry.list();
+        UserInterface.displayMessage("Available Agencys: ");
+        for(String element : registryList){
+            UserInterface.displayMessage(element);
+        }
+    }
+
 }
