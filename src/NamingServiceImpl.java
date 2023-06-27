@@ -62,7 +62,7 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
                 // Executando o agente
                 agent.start();
             } catch (Exception e) {
-                System.out.println("Failed to execute agent: " + e.getMessage());
+                UserInterface.displayError("executeAgent Error", e);
             }
         });
 
@@ -93,8 +93,7 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
                 registry.rebind(agentId, agentService);
                 System.out.println("Agent started: " + agentId);
             } catch (Exception e) {
-                System.out.println("Failed to start agent: " + agentId);
-                e.printStackTrace();
+                UserInterface.displayError("startAgent Error", e);
             }
         } else {
             System.out.println("Agent not found!");
