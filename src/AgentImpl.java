@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public class AgentImpl extends UnicastRemoteObject implements Agent {
     private String agentId;
-    private NamingService serviceRegistry;
+    private String agentName;
 
-    public AgentImpl(NamingService serviceRegistry) throws RemoteException {
+    public AgentImpl(String agentName) throws RemoteException {
         this.agentId = generateUniqueCode();
-        this.serviceRegistry = serviceRegistry;
+        this.agentName = agentName;
     }
 
     @Override
@@ -18,7 +18,15 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
         // Lógica para ouvir e processar mensagens aqui
     }
 
-    private String generateUniqueCode(){
+    public String getName(){
+        return this.agentName;
+    }
+
+    public String getId(){
+        return this.agentId;
+    }
+
+    public String generateUniqueCode(){
         return UUID.randomUUID().toString();
     }
 }
