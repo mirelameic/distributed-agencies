@@ -15,11 +15,6 @@ public class Server {
             AgencyImpl agency = new AgencyImpl(agencyName);
             Registry registry = LocateRegistry.createRegistry(port);
             Naming.rebind(agencyName, agency);
-            
-            // NamingService namingService = (NamingService) Naming.lookup("NamingService");
-            // System.out.println("foi");
-            // namingService.registerAgency(agencyName, agency);
-
             UserInterface.displayMessage("Server bound");
         } catch (Exception e) {
             UserInterface.displayError("Server Exception.", e);

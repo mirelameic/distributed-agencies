@@ -4,8 +4,10 @@ import java.rmi.registry.Registry;
 
 public class Client {
     static Agency currentAgency;
+    static NamingService namingService;
     public static void main(String[] args) {
         try {
+            //bindNamingService();
             boolean running = true;
             String command;
             showCommands();
@@ -45,6 +47,15 @@ public class Client {
         try {
             currentAgency = (Agency) Naming.lookup(agencyName);
             UserInterface.displayMessage("Connected to agency: " + agencyName);
+        } catch (Exception e) {
+            UserInterface.displayError("bind Exception.", e);
+        }
+    }
+
+    private static void bindNamingService() {
+        try {
+            namingService = (NamingService) Naming.lookup("NamingService");
+            UserInterface.displayMessage("Connected to NamingService");
         } catch (Exception e) {
             UserInterface.displayError("bind Exception.", e);
         }

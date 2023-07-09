@@ -9,13 +9,14 @@ public class NamingServiceServer {
         }
 
         int port = Integer.parseInt(args[0]);
+        String serviceName = "NamingService";
         try {
-            NamingService namingService = new NamingServiceImpl();
+            NamingServiceImpl namingService = new NamingServiceImpl();
             Registry registry = LocateRegistry.createRegistry(port);
-            registry.bind("NamingService", namingService);
-            System.out.println("NamingService-Server is ready.");
+            registry.rebind(serviceName, namingService);
+            UserInterface.displayMessage("NamingService bound at port " + port);
         } catch (Exception e) {
-            UserInterface.displayError("NamingServiceServer error", e);
+            UserInterface.displayError("NamingService Exception.", e);
         }
     }
 }
