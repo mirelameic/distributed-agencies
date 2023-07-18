@@ -1,5 +1,6 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.Naming;
 
 public class NamingServiceServer {
     public static void main(String[] args) {
@@ -12,8 +13,12 @@ public class NamingServiceServer {
         String serviceName = "NamingService";
         try {
             NamingServiceImpl namingService = new NamingServiceImpl();
-            Registry registry = LocateRegistry.createRegistry(port);
-            registry.rebind(serviceName, namingService);
+            LocateRegistry.createRegistry(8080);
+            Naming.rebind("rmi://localhost:8080/namingservice", namingService);
+
+            //NamingServiceImpl namingService = new NamingServiceImpl();
+            //Registry registry = LocateRegistry.createRegistry(port);
+            //registry.rebind(serviceName, namingService);
             UserInterface.displayMessage("NamingService bound at port " + port);
         } catch (Exception e) {
             UserInterface.displayError("NamingService Exception.", e);

@@ -15,6 +15,7 @@ public class Server {
             AgencyImpl agency = new AgencyImpl(agencyName);
             Registry registry = LocateRegistry.createRegistry(port);
             Naming.rebind(agencyName, agency);
+            // criar função no agency que registra no serviço de nome - agency.addtonamingserver
             UserInterface.displayMessage("Server bound");
         } catch (Exception e) {
             UserInterface.displayError("Server Exception.", e);

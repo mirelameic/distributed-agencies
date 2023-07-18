@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class AgencyImpl extends UnicastRemoteObject implements Agency {
+    // todo: conectar ao serviço de nome pra conseguir registrar
     private String agencyId;
     private String agencyName;
     private List<Agent> agentList;
@@ -15,8 +16,13 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
         this.agentList = new ArrayList<>();
     }
 
-    public void addAgent(Agent agent) {
+    public void addAgent(Agent agent) { // esse parametro provavelmente errado
         this.agentList.add(agent);
+        // 01. Gera um ID para o novo agente (enunciado fala q quem cria id eh agencia)
+        // 02. Cria uma thread para este novo agente
+        // 03. Adiciona o novo agente no serviço de nomes
+        // 04. Roda o "file" na nova thread
+        // 05. Retorna o ID
     }
     
     public void printAgentList() {
@@ -34,6 +40,16 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
         }
     }
     
+    public void moveAgent(Agent agent) {
+    }
+
+    public void removeAgent(Agent agent) {
+        // pega id do objeto
+        // para thread dele
+        // excluir lista de agentlist
+        // excluir do serviço de nome
+    }
+
     public String getName() {
         return this.agencyName;
     }

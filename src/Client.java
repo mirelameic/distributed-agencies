@@ -7,7 +7,7 @@ public class Client {
     static NamingService namingService;
     public static void main(String[] args) {
         try {
-            //bindNamingService();
+            bindNamingService();
             boolean running = true;
             String command;
             showCommands();
@@ -18,8 +18,10 @@ public class Client {
                 }else if (command.startsWith("bind ")) {
                     String newAgencyName = command.substring(5);
                     bindAgency(newAgencyName);
-                } else if (command.equals("listag")){
+                } else if (command.equals("listagencies")){
                     listAllAgencys();
+                } else if (command.equals("listagents")){
+                    listAgents();
                 } else if (command.equals("quit")) {
                     UserInterface.displayMessage("Client terminated.");
                     running = false;
@@ -37,7 +39,8 @@ public class Client {
         UserInterface.displayMessage("Available commands:");
         UserInterface.displayMessage("show commands - Show vailable commands");
         UserInterface.displayMessage("bind <agency_name> - Binds to the specified agency");
-        UserInterface.displayMessage("listag - Lists all available agencies");
+        UserInterface.displayMessage("listagencies - Lists all available agencies");
+        UserInterface.displayMessage("listagents - Lists all available agents");
         UserInterface.displayMessage("quit - Terminates the client");
         UserInterface.printLine();
     }
@@ -53,11 +56,14 @@ public class Client {
     }
 
     private static void bindNamingService() {
+        // NamingService namingService;
         try {
-            namingService = (NamingService) Naming.lookup("NamingService");
+            // namingService = (NamingService) Naming.lookup("NamingService");
+            NamingService service = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
             UserInterface.displayMessage("Connected to NamingService");
         } catch (Exception e) {
             UserInterface.displayError("bind Exception.", e);
+            e.printStackTrace();
         }
     }
 
@@ -69,5 +75,9 @@ public class Client {
         for(String element : registryList){
             UserInterface.displayMessage(element);
         }
+    }
+
+    public static void listAgents() throws Exception{
+        namingService.getAgencies();
     }
 }
