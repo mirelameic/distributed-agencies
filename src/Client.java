@@ -13,14 +13,14 @@ public class Client {
             showCommands();
             while (running) {
                 command = UserInterface.getUserCommand();
-                if(command.equals("show commands")){
+                if(command.equals("show-commands")){
                     showCommands();
                 }else if (command.startsWith("bind ")) {
                     String newAgencyName = command.substring(5);
                     bindAgency(newAgencyName);
-                } else if (command.equals("listagencies")){
+                } else if (command.equals("list-agencies")){
                     listAllAgencys();
-                } else if (command.equals("listagents")){
+                } else if (command.equals("list-agents")){
                     listAgents();
                 } else if (command.equals("quit")) {
                     UserInterface.displayMessage("Client terminated.");
@@ -37,11 +37,12 @@ public class Client {
     private static void showCommands() {
         UserInterface.printLine();
         UserInterface.displayMessage("Available commands:");
-        UserInterface.displayMessage("show commands - Show vailable commands");
-        UserInterface.displayMessage("bind <agency_name> - Binds to the specified agency");
-        UserInterface.displayMessage("listagencies - Lists all available agencies");
-        UserInterface.displayMessage("listagents - Lists all available agents");
-        UserInterface.displayMessage("quit - Terminates the client");
+        UserInterface.printLine();
+        UserInterface.displayMessage("'show-commands': Show vailable commands");
+        UserInterface.displayMessage("'bind <agency_name>': Binds to the specified agency");
+        UserInterface.displayMessage("'list-agencies': Lists all available agencies");
+        UserInterface.displayMessage("'list-agents': Lists all available agents");
+        UserInterface.displayMessage("'quit': Terminates the client");
         UserInterface.printLine();
     }
 
