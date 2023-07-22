@@ -15,7 +15,6 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
     public void start() throws RemoteException {
         System.out.println("Agent started: " + agentId);
         System.out.println("Listening for messages...");
-        // Lógica para ouvir e processar mensagens aqui
     }
 
     public String getName(){

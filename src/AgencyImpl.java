@@ -1,3 +1,4 @@
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -40,7 +41,16 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
         }
     }
     
-    public void moveAgent(Agent agent) {
+    public void moveAgent(Agent agent, String destinationAgencyName) throws RemoteException {
+        agentList.remove(agent);
+        try {
+            Agency destinationAgency = (Agency) Naming.lookup(destinationAgencyName);
+            destinationAgency.addAgent(agent);
+            NamingService namingService = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
+            namingService.moveAgent(agent.getId(), destinationAgency.getId());
+        } catch (Exception e) {
+            UserInterface.displayError("Error while moving agent.", e);
+        }
     }
 
     public void removeAgent(Agent agent) {
@@ -61,6 +71,4 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
     public String generateUniqueCode() {
         return UUID.randomUUID().toString();
     }
-
-    // Métodos para lidar com agentes
 }

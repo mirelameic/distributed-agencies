@@ -1,16 +1,9 @@
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NamingServiceImpl extends UnicastRemoteObject implements NamingService {
-    // alterações
-    // map com id e name, sem a agencia em si
-    // para os metodos de alteração são passados o id da agencia, e o name eh considerado endereço a ser encontrado
-    // adição dos métodos moveAgent e getAgencies
-    // map de agentes dentro das agencias (id do agente, id da agencia)
     private Map<String, String> registeredAgencies;
     private Map<String, String> agentsRelatedToAgencies;
 

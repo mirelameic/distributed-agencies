@@ -56,7 +56,7 @@ A classe `Agent` também possui um identificador único. Ela registra-se no serv
   ~~~
   - Abra outro terminal:
   ~~~
-  $ java -cp bin NamingServiceServer <port>
+  $ java -cp bin NamingServiceServer
   ~~~
   - Abra outro terminal. Troque `<agency_name>` pelo nome da agência que será criada e `<port>` pelo número da porta que deseja conectar:
   ~~~

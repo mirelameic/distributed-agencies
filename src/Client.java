@@ -18,6 +18,8 @@ public class Client {
                 }else if (command.startsWith("bind ")) {
                     String newAgencyName = command.substring(5);
                     bindAgency(newAgencyName);
+                } else if (command.equals("bind ns")) {
+                    bindNamingService();
                 } else if (command.equals("list-agencies")){
                     listAllAgencys();
                 } else if (command.equals("list-agents")){
@@ -40,6 +42,7 @@ public class Client {
         UserInterface.printLine();
         UserInterface.displayMessage("'show-commands': Show vailable commands");
         UserInterface.displayMessage("'bind <agency_name>': Binds to the specified agency");
+        UserInterface.displayMessage("'bind ns': Binds to the Naming Service");
         UserInterface.displayMessage("'list-agencies': Lists all available agencies");
         UserInterface.displayMessage("'list-agents': Lists all available agents");
         UserInterface.displayMessage("'quit': Terminates the client");
@@ -57,14 +60,11 @@ public class Client {
     }
 
     private static void bindNamingService() {
-        // NamingService namingService;
         try {
-            // namingService = (NamingService) Naming.lookup("NamingService");
             NamingService service = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
             UserInterface.displayMessage("Connected to NamingService");
         } catch (Exception e) {
             UserInterface.displayError("bind Exception.", e);
-            e.printStackTrace();
         }
     }
 
