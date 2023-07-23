@@ -1,6 +1,11 @@
+package User;
+
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+
+import Agency.AgencyImpl;
+import NamingService.NamingService;
 
 public class Server {
     public static void main(String[] args) {
@@ -12,12 +17,12 @@ public class Server {
         String agencyName = args[0];
         int port = Integer.parseInt(args[1]);
         try {
-            AgencyImpl agency = new AgencyImpl(agencyName);
+            AgencyImpl agency = new AgencyImpl(agencyName, port);
             Registry registry = LocateRegistry.createRegistry(port);
             Naming.rebind(agencyName, agency);
             
             NamingService namingService = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
-            namingService.registerAgency(agency.getId(), agency.getName());
+            namingService.registerAgency(agency.getID(), agency.getName());
 
             UserInterface.displayMessage("Server bound");
         } catch (Exception e) {

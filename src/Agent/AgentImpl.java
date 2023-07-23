@@ -1,3 +1,5 @@
+package Agent;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
@@ -7,6 +9,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
     private String agentName;
 
     public AgentImpl(String agentName) throws RemoteException {
+        super();
         this.agentId = generateUniqueCode();
         this.agentName = agentName;
     }

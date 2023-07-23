@@ -1,5 +1,10 @@
+package User;
+
 import java.rmi.Naming;
 import java.util.Map;
+
+import Agency.Agency;
+import NamingService.NamingService;
 
 public class Client {
     static Agency currentAgency;
@@ -22,7 +27,7 @@ public class Client {
                 }else if (command.startsWith("create-agent ")){
                         
                 } else if (command.equals("list-agents")){
-                    listAgents();
+                    //listAgents();
                 } else if (command.equals("quit")) {
                     UserInterface.displayMessage("Client terminated.");
                     running = false;
@@ -65,31 +70,19 @@ public class Client {
         }
     }
 
-    //Método antigo
-    // public static void listAgencies() throws Exception{
-    //     Registry registry = LocateRegistry.getRegistry();
-    //     String[] registryList = registry.list();
-    //     UserInterface.printLine();
-    //     UserInterface.displayMessage("Available Agencies: ");
-    //     for(String element : registryList){
-    //         UserInterface.displayMessage(element);
-    //     }
-    // }
-
-
-    public static void listAgencies() throws Exception{
-        Map<String, String> agencies = namingService.getAgencies();
-        UserInterface.printLine();
-        UserInterface.displayMessage("Available Agencies:");
-        for (Map.Entry<String, String> entry : agencies.entrySet()) {
-            String agencyId = entry.getKey();
-            String agencyName = entry.getValue();
-            UserInterface.displayMessage("Agency: " + agencyName + " | ID: " + agencyId);
+    public static void listAgencies() {
+        try {
+            Map<String, String> agencies = namingService.getAgencies();
+            UserInterface.printLine();
+            UserInterface.displayMessage("Available Agencies:");
+            for (Map.Entry<String, String> entry : agencies.entrySet()) {
+                String agencyId = entry.getKey();
+                String agencyName = entry.getValue();
+                UserInterface.displayMessage("Agency: " + agencyName + " | ID: " + agencyId);
+            }
+            UserInterface.printLine();
+        } catch (Exception e) {
+            UserInterface.displayError("listAgencies Exception.", e);
         }
-        UserInterface.printLine();
-    }
-
-    public static void listAgents() throws Exception{
-        currentAgency.getAgentList();
     }
 }

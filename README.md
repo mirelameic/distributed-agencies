@@ -9,6 +9,10 @@ A classe `Agent` também possui um identificador único. Ela registra-se no serv
 ## Estrutura
 
 - `src`: pasta com arquivos .java
+  - `Agency`:
+  - `NamingService`:
+  - `Agent`
+  - `User`:
 - `bin`: pasta com arquivos .class
 
 ## Classes
@@ -47,22 +51,23 @@ A classe `Agent` também possui um identificador único. Ela registra-se no serv
 ## Compilar
 - Dentro da pasta `distributed-agencies`, execute o comando:
   ~~~ 
-  $ javac -d bin src/*.java
+  $ find src -name "*.java" -print | xargs javac -d bin
   ~~~
 ## Executar
 - Dentro da pasta `distributed-agencies`, execute os seguintes comandos:
+  - Abra um terminal:
   ~~~ 
   $ cd bin; rmiregistry
   ~~~
   - Abra outro terminal:
   ~~~
-  $ java -cp bin NamingServiceServer
+  $  java -cp bin User.NamingServiceServer
   ~~~
   - Abra outro terminal. Troque `<agency_name>` pelo nome da agência que será criada e `<port>` pelo número da porta que deseja conectar:
   ~~~
-  $ java -cp bin Server <agency_name> <port>
+  $ java -cp bin User.Server <agency_name> <port>
   ~~~
   - Abra outro terminal:
   ~~~
-  $ java -cp bin Client
+  $ java -cp bin User.Client
   ~~~
