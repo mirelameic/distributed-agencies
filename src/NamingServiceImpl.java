@@ -14,6 +14,7 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
     @Override
     public void registerAgency(String agencyId, String agencyName) throws RemoteException {
         registeredAgencies.put(agencyId, agencyName);
+        System.out.println("Registered agency: " + agencyName);
     }
 
     @Override
@@ -33,7 +34,6 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
 
     @Override
     public Map<String, String> getAgencies() throws RemoteException {
-        return agentsRelatedToAgencies;
-        // retorna os agentes e as agencias - pra achar o endereço de uma agencia especifica, dar getagency com id da agencia que apareceu
+        return registeredAgencies;
     }
 }

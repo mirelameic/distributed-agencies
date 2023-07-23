@@ -1,6 +1,5 @@
 import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.util.Map;
 
 public class Client {
     static Agency currentAgency;
@@ -18,10 +17,10 @@ public class Client {
                 }else if (command.startsWith("bind ")) {
                     String newAgencyName = command.substring(5);
                     bindAgency(newAgencyName);
-                } else if (command.equals("bind ns")) {
-                    bindNamingService();
                 } else if (command.equals("list-agencies")){
-                    listAllAgencys();
+                    listAgencies();
+                }else if (command.startsWith("create-agent ")) {
+                        
                 } else if (command.equals("list-agents")){
                     listAgents();
                 } else if (command.equals("quit")) {
@@ -42,7 +41,6 @@ public class Client {
         UserInterface.printLine();
         UserInterface.displayMessage("'show-commands': Show vailable commands");
         UserInterface.displayMessage("'bind <agency_name>': Binds to the specified agency");
-        UserInterface.displayMessage("'bind ns': Binds to the Naming Service");
         UserInterface.displayMessage("'list-agencies': Lists all available agencies");
         UserInterface.displayMessage("'list-agents': Lists all available agents");
         UserInterface.displayMessage("'quit': Terminates the client");
@@ -59,22 +57,43 @@ public class Client {
         }
     }
 
-    private static void bindNamingService() {
+    private static NamingService bindNamingService() {
+        NamingService service = null;
         try {
-            NamingService service = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
+            service = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
             UserInterface.displayMessage("Connected to NamingService");
         } catch (Exception e) {
             UserInterface.displayError("bind Exception.", e);
         }
+        return service;
     }
 
-    public static void listAllAgencys() throws Exception{
-        Registry registry = LocateRegistry.getRegistry();
-        String[] registryList = registry.list();
-        UserInterface.printLine();
-        UserInterface.displayMessage("Available Agencies: ");
-        for(String element : registryList){
-            UserInterface.displayMessage(element);
+    //Método antigo
+    // public static void listAgencies() throws Exception{
+    //     Registry registry = LocateRegistry.getRegistry();
+    //     String[] registryList = registry.list();
+    //     UserInterface.printLine();
+    //     UserInterface.displayMessage("Available Agencies: ");
+    //     for(String element : registryList){
+    //         UserInterface.displayMessage(element);
+    //     }
+    // }
+
+    public static void listAgencies() throws Exception {
+        try {
+            NamingService namingService = bindNamingService();
+            Map<String, String> agencies = namingService.getAgencies();
+
+            UserInterface.printLine();
+            UserInterface.displayMessage("List of all agencies:");
+            for (Map.Entry<String, String> entry : agencies.entrySet()) {
+                String agencyId = entry.getKey();
+                String agencyName = entry.getValue();
+                UserInterface.displayMessage("Agency: " + agencyName + " | ID: " + agencyId);
+            }
+            UserInterface.printLine();
+        } catch (Exception e) {
+            UserInterface.displayError("Error listing agencies.", e);
         }
     }
 
