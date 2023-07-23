@@ -17,15 +17,18 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
         System.out.println("Listening for messages...");
     }
 
-    public String getName(){
+    @Override
+    public String getName() throws RemoteException {
         return this.agentName;
     }
 
-    public String getId(){
+    @Override
+    public String getId() throws RemoteException {
         return this.agentId;
     }
 
-    public String generateUniqueCode(){
+    @Override
+    public String generateUniqueCode() throws RemoteException {
         return UUID.randomUUID().toString();
     }
 }

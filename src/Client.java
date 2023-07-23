@@ -15,11 +15,11 @@ public class Client {
                 if(command.equals("show-commands")){
                     showCommands();
                 }else if (command.startsWith("bind ")) {
-                    String newAgencyName = command.substring(5);
-                    bindAgency(newAgencyName);
+                    String agency = command.substring(5);
+                    bindAgency(agency);
                 } else if (command.equals("list-agencies")){
                     listAgencies();
-                }else if (command.startsWith("create-agent ")) {
+                }else if (command.startsWith("create-agent ")){
                         
                 } else if (command.equals("list-agents")){
                     listAgents();
@@ -47,7 +47,6 @@ public class Client {
         UserInterface.printLine();
     }
 
-
     private static void bindAgency(String agencyName) {
         try {
             currentAgency = (Agency) Naming.lookup(agencyName);
@@ -57,15 +56,13 @@ public class Client {
         }
     }
 
-    private static NamingService bindNamingService() {
-        NamingService service = null;
+    private static void bindNamingService() {
         try {
-            service = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
+            namingService = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
             UserInterface.displayMessage("Connected to NamingService");
         } catch (Exception e) {
-            UserInterface.displayError("bind Exception.", e);
+            UserInterface.displayError("bind NamingService Exception.", e);
         }
-        return service;
     }
 
     //Método antigo
@@ -79,25 +76,20 @@ public class Client {
     //     }
     // }
 
-    public static void listAgencies() throws Exception {
-        try {
-            NamingService namingService = bindNamingService();
-            Map<String, String> agencies = namingService.getAgencies();
 
-            UserInterface.printLine();
-            UserInterface.displayMessage("Available Agencies:");
-            for (Map.Entry<String, String> entry : agencies.entrySet()) {
-                String agencyId = entry.getKey();
-                String agencyName = entry.getValue();
-                UserInterface.displayMessage("Agency: " + agencyName + " | ID: " + agencyId);
-            }
-            UserInterface.printLine();
-        } catch (Exception e) {
-            UserInterface.displayError("Error listing agencies.", e);
+    public static void listAgencies() throws Exception{
+        Map<String, String> agencies = namingService.getAgencies();
+        UserInterface.printLine();
+        UserInterface.displayMessage("Available Agencies:");
+        for (Map.Entry<String, String> entry : agencies.entrySet()) {
+            String agencyId = entry.getKey();
+            String agencyName = entry.getValue();
+            UserInterface.displayMessage("Agency: " + agencyName + " | ID: " + agencyId);
         }
+        UserInterface.printLine();
     }
 
     public static void listAgents() throws Exception{
-        namingService.getAgencies();
+        currentAgency.getAgentList();
     }
 }

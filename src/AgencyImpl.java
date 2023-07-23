@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class AgencyImpl extends UnicastRemoteObject implements Agency {
-    // todo: conectar ao serviço de nome pra conseguir registrar
     private String agencyId;
     private String agencyName;
     private List<Agent> agentList;
-
+    
     public AgencyImpl(String agencyName) throws RemoteException {
         this.agencyId = generateUniqueCode();
         this.agencyName = agencyName;
         this.agentList = new ArrayList<>();
     }
 
-    public void addAgent(Agent agent) { // esse parametro provavelmente errado
+    @Override
+    public void addAgent(Agent agent) throws RemoteException{ // esse parametro provavelmente errado
         this.agentList.add(agent);
         // 01. Gera um ID para o novo agente (enunciado fala q quem cria id eh agencia)
         // 02. Cria uma thread para este novo agente
@@ -26,21 +26,7 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
         // 05. Retorna o ID
     }
     
-    public void printAgentList() {
-        if (agentList.isEmpty()) {
-            System.out.println("No agents available in the list.");
-        } else {
-            System.out.println("Agent List:");
-            for (Agent agent : agentList) {
-                try {
-                    System.out.println(agent.getName());
-                } catch (RemoteException e) {
-                    UserInterface.displayError("printAgentList error", e);
-                }
-            }
-        }
-    }
-    
+    @Override
     public void moveAgent(Agent agent, String destinationAgencyName) throws RemoteException {
         agentList.remove(agent);
         try {
@@ -53,22 +39,31 @@ public class AgencyImpl extends UnicastRemoteObject implements Agency {
         }
     }
 
-    public void removeAgent(Agent agent) {
+    @Override
+    public void removeAgent(Agent agent) throws RemoteException{
         // pega id do objeto
         // para thread dele
         // excluir lista de agentlist
         // excluir do serviço de nome
     }
 
-    public String getName() {
+    @Override
+    public String getName() throws RemoteException{
         return this.agencyName;
     }
 
-    public String getId() {
+    @Override
+    public String getId() throws RemoteException{
         return this.agencyId;
     }
 
-    public String generateUniqueCode() {
+    @Override
+    public List<Agent> getAgentList() throws RemoteException{
+        return this.agentList;
+    }
+
+    @Override
+    public String generateUniqueCode() throws RemoteException{
         return UUID.randomUUID().toString();
     }
 }

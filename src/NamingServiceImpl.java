@@ -18,11 +18,6 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
     }
 
     @Override
-    public String getAgency(String agencyId) throws RemoteException {
-        return registeredAgencies.get(agencyId);
-    }
-
-    @Override
     public void removeAgency(String agencyId) throws RemoteException {
         registeredAgencies.remove(agencyId);
     }
@@ -35,5 +30,10 @@ public class NamingServiceImpl extends UnicastRemoteObject implements NamingServ
     @Override
     public Map<String, String> getAgencies() throws RemoteException {
         return registeredAgencies;
+    }
+
+    @Override
+    public Map<String, String> getAgentsRelatedToAgencies() throws RemoteException {
+        return agentsRelatedToAgencies;
     }
 }
