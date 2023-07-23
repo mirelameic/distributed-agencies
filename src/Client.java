@@ -85,7 +85,7 @@ public class Client {
             Map<String, String> agencies = namingService.getAgencies();
 
             UserInterface.printLine();
-            UserInterface.displayMessage("List of all agencies:");
+            UserInterface.displayMessage("Available Agencies:");
             for (Map.Entry<String, String> entry : agencies.entrySet()) {
                 String agencyId = entry.getKey();
                 String agencyName = entry.getValue();

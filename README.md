@@ -1,4 +1,4 @@
-# Distributed Agencys
+# Distributed Agencies
 
     Projeto da disciplina de Sistemas Distribuidos (EACH-USP)
 
@@ -45,12 +45,12 @@ A classe `Agent` também possui um identificador único. Ela registra-se no serv
 
 #
 ## Compilar
-- Dentro da pasta `distributed-agencys`, execute o comando:
+- Dentro da pasta `distributed-agencies`, execute o comando:
   ~~~ 
   $ javac -d bin src/*.java
   ~~~
 ## Executar
-- Dentro da pasta `distributed-agencys`, execute os seguintes comandos:
+- Dentro da pasta `distributed-agencies`, execute os seguintes comandos:
   ~~~ 
   $ cd bin; rmiregistry
   ~~~
