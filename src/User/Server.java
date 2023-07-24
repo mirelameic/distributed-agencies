@@ -22,7 +22,7 @@ public class Server {
             Naming.rebind(agencyName, agency);
             
             NamingService namingService = (NamingService) Naming.lookup("rmi://localhost:8080/namingservice");
-            namingService.registerAgency(agency.getID(), agency.getName());
+            namingService.registerAgency(agency);
 
             UserInterface.displayMessage("Server bound");
         } catch (Exception e) {

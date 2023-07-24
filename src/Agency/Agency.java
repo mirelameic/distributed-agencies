@@ -2,16 +2,23 @@ package Agency;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import Agent.Agent;
 
 public interface Agency extends Remote{
-    public void addAgent(Agent agent) throws RemoteException;
-    public void moveAgent(Agent agent, String destinationAgencyName) throws RemoteException;
-    public void removeAgent(Agent agent) throws RemoteException;
+    public String addAgent(Agent agent) throws RemoteException;
+    public boolean moveAgent(String agentID, String newAgencyName) throws RemoteException ;
+    public boolean destroyAgent(String agentID) throws RemoteException;
+    public String sendMessageToAgent(String originAgentID, String destinationAgentID, String messageContent);
+    public Map<String, LinkedBlockingQueue<Message>> getReceivedMessages();
+    public String receiveMessage(Message message);
+    public void answerMessage(Message message);
     public String getID() throws RemoteException;
     public String getName() throws RemoteException;
-    public List<Agent> getAgentsList() throws RemoteException;
-    public String generateUniqueCode() throws RemoteException;
+    public Agent getAgentByID(String agentID) throws RemoteException;
+    public String getAddress();
+    public LinkedList<Agent> getAgentsList() throws RemoteException;
 }

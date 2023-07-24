@@ -5,7 +5,6 @@ import java.rmi.Naming;
 
 import NamingService.NamingServiceImpl;
 
-
 public class NamingServiceServer {
     public static void main(String[] args) {
         try {

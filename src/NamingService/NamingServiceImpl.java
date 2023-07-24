@@ -2,40 +2,141 @@ package NamingService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+
+import Agency.Agency;
+import Agent.Agent;
+import User.UserInterface;
 
 public class NamingServiceImpl extends UnicastRemoteObject implements NamingService {
-    private Map<String, String> registeredAgencies;
-    private Map<String, String> agentsRelatedToAgencies;
+    public LinkedList<Agency> registeredAgencies;
 
     public NamingServiceImpl() throws RemoteException {
-        registeredAgencies = new HashMap<>();
+        super();
+        this.registeredAgencies = new LinkedList<Agency>();
     }
 
     @Override
-    public void registerAgency(String agencyId, String agencyName) throws RemoteException {
-        registeredAgencies.put(agencyId, agencyName);
-        System.out.println("Registered agency: " + agencyName);
+    public Agency getAgencyByID(String agencyID) throws RemoteException{
+        for (Agency agency : registeredAgencies) {
+            if (agency.getID().equals(agencyID)) {
+                return agency;
+            }
+        }
+        return null;
     }
 
     @Override
-    public void removeAgency(String agencyId) throws RemoteException {
-        registeredAgencies.remove(agencyId);
+    public Agency getAgencyByName(String agencyName) throws RemoteException {
+        for (Agency agency : registeredAgencies) {
+            if (agency.getName().equals(agencyName)) {
+                return agency;
+            }
+        }
+        return null;
     }
 
     @Override
-    public void moveAgent(String agentId, String actualAgencyId) throws RemoteException {
-        agentsRelatedToAgencies.put(agentId, actualAgencyId);
+    public LinkedList<Agency> getAgenciesList() throws RemoteException {
+        return this.registeredAgencies;
+    }
+
+
+    @Override
+    public Agency getAgencyByAgentID(String agentID) throws RemoteException {
+
+        for (Agency agency : this.registeredAgencies) {
+            LinkedList<Agent> agents = agency.getAgentsList();
+
+            for (Agent agent : agents) {
+                if (agent.getID().equals(agentID)) {
+                    return agency;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
-    public Map<String, String> getAgencies() throws RemoteException {
-        return registeredAgencies;
+    public Agent getAgentByID(String agentID) throws RemoteException {
+                for (Agency agency : this.registeredAgencies) {
+            LinkedList<Agent> agents = agency.getAgentsList();
+
+            for (Agent agent : agents) {
+                if (agent.getID().equals(agentID)) {
+                    return agent;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
-    public Map<String, String> getAgentsRelatedToAgencies() throws RemoteException {
-        return agentsRelatedToAgencies;
+    public void registerAgency(Agency agency) throws RemoteException {
+        registeredAgencies.add(agency);
+        UserInterface.displayMessage("Registered agency: " + agency.getName());
+    }
+
+    @Override
+    public boolean removeAgent(String agentID) throws RemoteException {
+        for (Agency agency : registeredAgencies) {
+            LinkedList<Agent> agents = agency.getAgentsList();
+
+            for (int i = 0; i < agents.size(); i++) {
+                if (agents.get(i).getID().equals(agentID)) {
+                    agents.remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeAgency(String agencyID) throws RemoteException {
+        int numberOfAgencies = this.registeredAgencies.size();
+
+        for (int i = 0; i < numberOfAgencies; i++) {
+            if (registeredAgencies.get(i).getID().equals(agencyID)) {
+                registeredAgencies.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addNewAgent(String agentID, String agentName, String agencyID) throws RemoteException {
+        Agent newAgent = new Agent(agentName, this.getAgencyByAgentID(agencyID));
+
+        for (Agency agency : this.registeredAgencies) {
+            if (agency.getID().equals(agencyID)) {
+                agency.addAgent(newAgent);
+                UserInterface.displayMessage("Added agent " + agentID + " to agency " + agencyID);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean moveAgent(String agentID, String oldAgencyID, String newAgencyID) throws RemoteException {
+        Agency agency = this.getAgencyByID(oldAgencyID);
+        Agent agent = agency.getAgentByID(agentID);
+
+        this.removeAgent(agentID);
+        this.addNewAgent(agentID, agent.getName(), newAgencyID);
+
+        return true;
+    }
+
+    @Override
+    public LinkedList<Agent> getAgentsByAgencyID(String agencyID) throws RemoteException {
+        for (Agency agency : this.registeredAgencies) {
+            if (agency.getID().equals(agencyID)) {
+                return agency.getAgentsList();
+            }
+        }
+        return new LinkedList<>();
     }
 }
